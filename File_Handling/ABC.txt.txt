@@ -1,0 +1,68 @@
+
+CREATE TABLE Bus (bus_no INT PRIMARY KEY, capacity INT NOT NULL,depot_name VARCHAR(50) NOT NULL);
+
+CREATE TABLE Driver (driver_no INT PRIMARY KEY,driver_name VARCHAR(50) NOT NULL,
+  license_no VARCHAR(20) NOT NULL,address VARCHAR(100) NOT NULL,
+  age INT NOT NULL CHECK (age > 18),salary int NOT NULL);
+
+CREATE TABLE Bus_Driver (bus_no INT NOT NULL  REFERENCES Bus (bus_no),
+  driver_no INT NOT NULL REFERENCES Driver (driver_no),
+  date_of_duty DATE NOT NULL);
+
+INSERT INTO Bus (bus_no, capacity, depot_name) VALUES
+(101, 50, 'A'),
+(102, 40, 'B'),
+(103, 60, 'C');
+
+INSERT INTO Driver (driver_no, driver_name, license_no, address, age, salary) VALUES
+(201, 'sham', 'A123', 'New York', 25, 3000.00),
+(202, 'karan', 'B456', 'London', 30, 5000),
+(203, 'kunal', 'C789', 'Paris', 28, 3200.00);
+
+INSERT INTO Bus_Driver (bus_no, driver_no, date_of_duty) VALUES
+(101, 201, '2002-04-01'),
+(101, 202, '2009-02-12'),
+(102, 202, '2023-04-11'),
+(103, 203, '2055-05-21');
+
+
+i. Find the number of buses having capacity more than 20. 
+
+
+ii. Count number of drivers who did duty on “15/01/2017” 
+
+
+iii. Give the names of all drivers starting with ‘S’. 
+
+
+iv. Calculate the average salary of a driver. 
+
+
+v. Find all details of driver named “____”. 
+
+C Write a query to find the names of all drivers who were driving buses 
+from “Kothrud Depot” on 12/2/2009. 
+=SELECT d.driver_name
+FROM Bus b
+JOIN Bus_Driver bd
+ON b.bus_no = bd.bus_no
+JOIN Driver d
+ON bd.driver_no = d.driver_no
+WHERE b.depot_name = 'Kothrud Depot'
+AND bd.date_of_duty = '2009-12-02';
+
+
+OR 
+
+Create a View to find all details of buses which are driven by drivers
+whose age is less than 25 years
+
+= create view bd as SELECT b.*, d.*
+FROM Bus b
+JOIN Bus_Driver bd
+ON b.bus_no = bd.bus_no
+JOIN Driver d
+ON bd.driver_no = d.driver_no
+WHERE d.age < 25;
+
+
